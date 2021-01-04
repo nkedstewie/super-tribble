@@ -1,0 +1,76 @@
+import java.util.Scanner;
+import java.util.Arrays;
+import java.util.OptionalDouble;
+import java.io.File;
+
+public class Unit7_Java_Part1 {
+
+	public static void main(String[] args) {
+		try {
+			
+			Scanner scanner = new Scanner(new File("IN300_dataset2.txt"));
+			int [] result = new int [250000];
+			int i = 0;
+			while(scanner.hasNextInt()) {
+				result[i++] = scanner.nextInt();
+			} // End of while bracket
+			
+			OptionalDouble mean = Arrays.stream(result).average();
+			
+			// Mean statements
+			if (mean.isPresent()) {
+				System.out.println("The average is: " + mean.getAsDouble());
+			} // End of mean if statement
+			else {
+				System.out.println("There are no values to average");
+			} //End of mean else bracket
+			
+			// Median statements
+			if(result.length%2==0) {
+				double mid1 = result[(result.length/2)-1];
+				double mid2 = result[result.length/2];
+				double median = (mid1 + mid2)/2;
+				System.out.println("The median is: " + median);
+			} // End of median if statement
+			else {
+				double median = result[(result.length/2)+1];
+				System.out.println("Them median is: " + median);
+			} // End of median else bracket
+			
+			// Mode statements
+			int modeCount = 0;
+			double mode = 0;
+			int tempCnt = 0;
+			
+			for (double intValue : result) {
+				tempCnt = 0;
+				for (double value : result) {
+					if (intValue == value) {
+						tempCnt++;
+					} // End of for loop 2 if statement bracket
+				if (tempCnt > modeCount) {
+					modeCount = tempCnt;
+					mode = intValue;
+				} // end of for loop 2 if statment
+				} // End of for loop 2 bracket
+				
+			System.out.println("Mode " + mode + " appears " + modeCount + " times.");
+			
+			int sdSum = 0;
+			for (double dValue : result) {
+				sdSum += Math.pow((dValue - mean.getAsDouble()), 2);
+			} // End of for loop 3 bracket
+			
+			System.out.println("The standard deviation is " + Math.sqrt( sdSum / (result.length ) ));
+			
+			scanner.close();
+			} // End of for loop 1 bracket
+		} // End of try bracket
+		
+		catch (Exception ex) {
+			System.out.println(ex);
+		}
+
+	} // End of main bracket
+
+} // End of class bracket
